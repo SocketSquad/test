@@ -10,7 +10,7 @@ class Calculator {
     // Fonction avec un bug volontaire pour test
     multiply(a, b) {
         if (a === 0) return 0;
-        return a  b;
+        return a b;
     }
 }
 
