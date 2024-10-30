@@ -10,8 +10,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "sonar": "sonar-scanner",
-    "sonar:test": "npm run test && npm run sonar"
+    "sonar": "sonar-scanner"
   },
   "keywords": [],
   "author": "",
