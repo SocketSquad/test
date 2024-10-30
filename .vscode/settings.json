@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "socketsquad",
+        "projectKey": "SocketSquad_test"
+    }
+}
