@@ -26,5 +26,4 @@ var Calculator = function() {  // Utilisation de var
     }
 }
 
-// Export incorrect
 exports = Calculator
