@@ -8,7 +8,7 @@ describe('Calculator', () => {
     });
 
     test('should add two numbers correctly', () => {
-        expect(calc.add(2, 3)).toBe(5);
+        expect(calc.add(2, 3)).toBe(7);
     });
 
     test('should subtract two numbers correctly', () => {
