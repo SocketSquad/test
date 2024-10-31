@@ -1,79 +1,18 @@
-// Global variable - bad practice
-var globalVar = "I am global";
+let c = 0;
 
-// Duplicated function
-function processData(data) {
-    if(data == null) return;  
-    if(data == null) return; 
-    
-    var unusedVar = "never used";  
-    
-    if(data) {
-        if(data.length > 0) {  
-            if(data[0]) {
-                console.log(data); 
-            }
-        }
+class Calculator {
+    add(a, b) {
+        return a + b;
+    }
+
+    subtract(a, b) {
+        return a - b;
+    }
+
+    multiply(a, b) {
+        if (a === 0) return 0;
+        return a * b;
     }
 }
 
-// Function with too many parameters
-function tooManyParams(param1, param2, param3, param4, param5, param6, param7, param8) {
-    try {
-        
-    } catch(e) {
-        
-    }
-    
-    return param1;  // Other parameters are unused
-}
-
-// Duplicated function with slight modification
-function processDataAgain(data) {
-    if(data == null) return;
-    if(data == null) return;
-    
-    var unusedVar = "never used";
-    
-    if(data) {
-        if(data.length > 0) {
-            if(data[0]) {
-                console.log(data);
-            }
-        }
-    }
-}
-
-// Security issue - hardcoded credentials
-const password = "123456";
-const apiKey = "abcdef123456";
-
-// Complex function with high cognitive complexity
-function complexFunction(a, b) {
-    let result = 0;
-    for(let i = 0; i < a; i++) {
-        for(let j = 0; j < b; j++) {
-            if(i % 2 === 0) {
-                if(j % 2 === 0) {
-                    result += i * j;
-                } else {
-                    result -= i * j;
-                }
-            } else {
-                if(j % 2 === 0) {
-                    result *= i;
-                } else {
-                    result /= (j || 1);
-                }
-            }
-        }
-    }
-    return result;
-}
-
-module.exports = {
-    processData,
-    tooManyParams,
-    processDataAgain,
-    complexFunction
-};
+module.exports = Calculator;
