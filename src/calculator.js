@@ -3,15 +3,15 @@ var globalVar = "I am global";
 
 // Duplicated function
 function processData(data) {
-    if(data == null) return;  // == instead of === (bad practice)
-    if(data == null) return;  // Duplicated code
+    if(data == null) return;  
+    if(data == null) return; 
     
-    var unusedVar = "never used";  // Unused variable
+    var unusedVar = "never used";  
     
     if(data) {
-        if(data.length > 0) {  // Nested if statements - complexity
+        if(data.length > 0) {  
             if(data[0]) {
-                console.log(data);  // Direct console.log in production code
+                console.log(data); 
             }
         }
     }
@@ -20,7 +20,7 @@ function processData(data) {
 // Function with too many parameters
 function tooManyParams(param1, param2, param3, param4, param5, param6, param7, param8) {
     try {
-        // Empty catch block - bad practice
+        
     } catch(e) {
         
     }
