@@ -60,16 +60,14 @@ jobs:
         if: steps.run-tests.outcome == 'success'
         run: |
           message="✅ Tests Passed!"
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            message="${message}\nPR: *${{github.event.pull_request.title}}*"
-            message="${message}\nAuthor: *${{github.event.pull_request.user.login}}*"
-            message="${message}\nLink: ${{github.event.pull_request.html_url}}"
-          fi
+          message="${message}\nPR: *${{github.event.pull_request.title}}*"
+          message="${message}\nAuthor: *${{github.event.pull_request.user.login}}*"
+          message="${message}\nLink: ${{github.event.pull_request.html_url}}"
 
           curl -X POST \
             -H 'Content-type: application/json' \
             -H 'Authorization: Bearer ${{ secrets.SLACK_TOKEN}}' \
-            --data "{\"channel\":\"nexus-app-back-tests\",\"text\":\"$message\"}" \
+            --data "{\"channel\":\"#nexus-app-back-tests\",\"text\":\"$message\"}" \
             https://slack.com/api/chat.postMessage
 
       - name: Slack Notification on Test Failure
@@ -85,7 +83,7 @@ jobs:
           curl -X POST \
             -H 'Content-type: application/json' \
             -H 'Authorization: Bearer ${{ secrets.SLACK_TOKEN}}' \
-            --data "{\"channel\":\"nexus-app-back-tests\",\"text\":\"$message\"}" \
+            --data "{\"channel\":\"#nexus-app-back-tests\",\"text\":\"$message\"}" \
             https://slack.com/api/chat.postMessage
   
   integration-tests:
