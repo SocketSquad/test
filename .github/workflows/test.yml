@@ -106,12 +106,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '20'
+      - name: Load environment variables
+        run: echo "DATABASE_URL=mongodb+srv://elmorjanimohamed9:IGwR2JMI7ceq7gJ8@nexus.cz5mk.mongodb.net/?retryWrites=true&w=majority&appName=Nexus"
       - name: Install dependencies
         run: npm ci
       - name: Run integration tests
         run: npm run test:e2e
         env:
-          MONGODB_URI: mongodb://test:test@localhost:27017
+          MONGODB_URI: mongodb+srv://elmorjanimohamed9:IGwR2JMI7ceq7gJ8@nexus.cz5mk.mongodb.net/?retryWrites=true&w=majority&appName=Nexus
 
   sonar-analysis:
     name: SonarQube Analysis
