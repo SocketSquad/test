@@ -60,9 +60,11 @@ jobs:
         if: steps.run-tests.outcome == 'success'
         run: |
           message="✅ Tests Passed!"
-          message="${message}\nPR: *${{github.event.pull_request.title}}*"
-          message="${message}\nAuthor: *${{github.event.pull_request.user.login}}*"
-          message="${message}\nLink: ${{github.event.pull_request.html_url}}"
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            message="${message}\nPR: *${{github.event.pull_request.title}}*"
+            message="${message}\nAuthor: *${{github.event.pull_request.user.login}}*"
+            message="${message}\nLink: ${{github.event.pull_request.html_url}}"
+          fi
 
           curl -X POST \
             -H 'Content-type: application/json' \
