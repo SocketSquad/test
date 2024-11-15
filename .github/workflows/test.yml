@@ -46,7 +46,11 @@ jobs:
         run: npm run test
         continue-on-error: true
 
+      - name: Run coverage tests
+        run: npm run test:cov
+
       - name: Upload coverage reports
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: coverage-reports
