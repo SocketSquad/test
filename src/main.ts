@@ -7,6 +7,7 @@ async function bootstrap() {
     await app.listen(process.env.PORT || 3000);
     console.log(`Application is running on: ${await app.getUrl()}`);
   } catch (error) {
+
     console.error('Application failed to start:', error);
     process.exit(1);
   }
