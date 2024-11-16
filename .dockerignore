@@ -1,0 +1,7 @@
+node_modules
+dist
+
+# Exclude version control files
+.git
+.gitignore
+*.md
