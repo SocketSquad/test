@@ -31,30 +31,40 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run Tests with Coverage
         id: run-tests
-        run: npm run test:cov
+        run: |
+          npm run test:cov
+          ls -la coverage/
         continue-on-error: true
       
-      - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+      - name: Debug Info
+        run: |
+          echo "Checking coverage directory structure:"
+          ls -la coverage/
+          echo "Checking lcov.info existence:"
+          ls -la coverage/lcov.info || echo "lcov.info not found"
+          
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v4
         with:
-          fail_ci_if_error: true
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/lcov.info
           flags: unittests
           name: codecov-umbrella
-          verbose: true
+          fail_ci_if_error: true
 
       - name: Slack Notification on Test Success
         if: steps.run-tests.outcome == 'success'
