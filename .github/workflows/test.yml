@@ -54,7 +54,6 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          flags: unit
 
       - name: Slack Notification on Test Success
         if: steps.run-tests.outcome == 'success'
