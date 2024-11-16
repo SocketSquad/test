@@ -3,12 +3,9 @@ name: Tests
 on:
   pull_request:
     branches: [ "main", "develop" ]
-  push:
-    branches: [ "main", "develop" ]
-
-permissions:
-  contents: read
-  pull-requests: write
+  
+env:
+  SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
 jobs:
   lint:
@@ -41,22 +38,33 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm ci
 
       - name: Run Tests with Coverage
         id: run-tests
-        run: npm run test:cov
+        run: |
+          npm run test:cov
+          ls -la coverage/
         continue-on-error: true
-
+      
+      - name: Debug Info
+        run: |
+          echo "Checking coverage directory structure:"
+          ls -la coverage/
+          echo "Checking lcov.info existence:"
+          ls -la coverage/lcov.info || echo "lcov.info not found"
+          
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
         with:
-          directory: ./coverage/
-          files: ./coverage/lcov.info,./coverage/coverage-final.json
-          fail_ci_if_error: false
-          verbose: true
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: true
 
       - name: Slack Notification on Test Success
         if: steps.run-tests.outcome == 'success'
@@ -130,6 +138,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+      
       - name: SonarQube Cloud Scan
         uses: SonarSource/sonarcloud-github-action@master
         env:
