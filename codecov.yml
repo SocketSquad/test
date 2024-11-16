@@ -1,0 +1,29 @@
+codecov:
+  require_ci_to_pass: yes
+  notify:
+    wait_for_ci: yes
+
+coverage:
+  status:
+    project:
+      default:
+        # basic
+        target: 80%    # the required coverage value
+        threshold: 1%  # the leniency in hitting the target
+        paths:
+          - "src"     # only include coverage in "src/" folder
+    patch:
+      default:
+        target: 80%   # the required coverage value for PR changes
+
+comment:
+  layout: "reach,diff,flags,files,footer"
+  behavior: default
+  require_changes: false
+  require_base: false
+  require_head: true
+
+ignore:
+  - "test/**/*"       # ignore test files
+  - "**/*.spec.ts"    # ignore test files
+  - "**/*.test.ts"    # ignore test files
