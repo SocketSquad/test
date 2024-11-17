@@ -6,13 +6,19 @@ import { MongooseModule } from '@nestjs/mongoose';
   imports: [
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        uri: configService.get<string>('DATABASE_URL'),
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        dbName: 'Nexus',
-        retryWrites: true,
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const uri = configService.get<string>('DATABASE_URL');
+        if (!uri) {
+          throw new Error('DATABASE_URL environment variable is not defined');
+        }
+        return {
+          uri,
+          useNewUrlParser: true,
+          useUnifiedTopology: true,
+          dbName: 'Nexus',
+          retryWrites: true,
+        };
+      },
       inject: [ConfigService],
     }),
   ],
