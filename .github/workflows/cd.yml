@@ -7,10 +7,13 @@ on:
       - completed
     branches: [ "main" ]
 
+env:
+  SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+
 jobs:
   deploy:
     runs-on: self-hosted
-    
+
     steps:
       - name: Pull Docker image
         run: sudo docker pull echaf/nexus-app-back:latest
@@ -18,39 +21,21 @@ jobs:
       - name: Stop Old Container
         run: sudo docker rm -f nexus-app-back-container || true
 
-      - name: Create env file
-        run: |
-          echo "DATABASE_URL=mongodb+srv://elmorjanimohamed9:IGwR2JMI7ceq7gJ8@nexus.cz5mk.mongodb.net/?retryWrites=true&w=majority&appName=Nexus" > .env
-          echo "PORT=3001" >> .env
-
       - name: Run New Docker Container
         id: run-container
+        # run: sudo docker run -d -p 3001:3001 --name nexus-app-back-container echaf/nexus-app-back || exit 1
         run: |
           sudo docker run -d \
             -p 3001:3001 \
             --name nexus-app-back-container \
-            --env-file .env \
-            --restart unless-stopped \
-            echaf/nexus-app-back:latest
-
-      - name: Check Container Logs
-        run: |
-          sleep 5
-          sudo docker logs nexus-app-back-container
-
-      - name: Verify Container is Running
-        run: |
-          if ! sudo docker ps | grep nexus-app-back-container; then
-            echo "Container failed to start. Checking logs..."
-            sudo docker logs nexus-app-back-container
-            exit 1
-          fi
+            -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
+            -e PORT=3001 \
 
       - name: Slack Notification on Deployment Success
         if: success()
         run: |
           message="✅ Deployment successful for branch *${{ github.ref_name }}*"
-          
+
           curl -X POST \
             -H 'Content-type: application/json' \
             -H 'Authorization: Bearer ${{ secrets.SLACK_TOKEN}}' \
@@ -61,20 +46,16 @@ jobs:
         if: failure()
         run: |
           echo "Deployment failed, rolling back..."
-          sudo docker rm -f nexus-app-back-container || true
-          sudo docker run -d -p 3001:3001 --name nexus-app-back-container echaf/nexus-app-back:previous
+          docker rm -f nexus-app-back-container || true
+          docker run -d -p 3001:3001 --name nexus-app-back-container echaf/nexus-app-back:previous
           
       - name: Slack Notification on Deployment Failure
         if: failure()
         run: |
           message="❌ Deployment failed for branch *${{ github.ref_name }}*"
-          
+
           curl -X POST \
             -H 'Content-type: application/json' \
             -H 'Authorization: Bearer ${{ secrets.SLACK_TOKEN}}' \
             --data "{\"channel\":\"nexus-app-back-deployment\",\"text\":\"$message\"}" \
             https://slack.com/api/chat.postMessage
-
-      - name: Clean up env file
-        if: always()
-        run: rm -f .env

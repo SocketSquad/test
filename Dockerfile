@@ -1,30 +1,30 @@
-# Use the official Node.js image as the base image
-FROM node:20-alpine
+FROM node:20-alpine as build
 
-# Set the working directory inside the container
-WORKDIR /app
+WORKDIR /app/
 
-# Copy package.json and package-lock.json to the working directory
-COPY package*.json ./
+COPY package.json ./
 
-# Install dependencies
 RUN npm install
 
-# Copy the rest of the application code to the working directory
 COPY . .
 
-# Ensure .env is copied if it exists
-COPY .env* ./
-
-# Build the NestJS application
 RUN npm run build
 
-# Expose the port the app runs on
+
+#prod stage
+FROM node:20-alpine
+
+WORKDIR /app/
+
+ARG NODE_ENV=production
+ENV NODE_ENV=${NODE_ENV}
+
+COPY --from=build /app/dist ./dist
+
+COPY --from=build /app/package.json ./
+
+RUN npm install --only=production
+
 EXPOSE 3001
 
-# Add a healthcheck
-HEALTHCHECK --interval=30s --timeout=30s --start-period=5s --retries=3 \
-    CMD node -e "require('http').request({ host: 'localhost', port: 3001, path: '/health', timeout: 2000 }, (res) => { process.exit(res.statusCode === 200 ? 0 : 1); }).on('error', () => { process.exit(1); }).end()"
-
-# Define the command to run the application
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]
