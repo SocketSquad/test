@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
+# Copy .env file if it exists
+COPY .env* ./
+
 # Build the NestJS application
 RUN npm run build
 
