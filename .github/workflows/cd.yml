@@ -29,7 +29,7 @@ jobs:
           sudo docker run -d \
             -p 3001:3001 \
             --name nexus-app-back-container \
-            -e DATABASE_URL="mongodb://localhost:27017/Nexus" \
+            -e DATABASE_URL="mongodb+srv://elmorjanimohamed9:IGwR2JMI7ceq7gJ8@nexus.cz5mk.mongodb.net/?retryWrites=true&w=majority&appName=Nexus" \
             -e PORT=3001 \
             echaf/nexus-app-back:latest
           
