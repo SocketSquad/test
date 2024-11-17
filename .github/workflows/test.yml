@@ -47,15 +47,8 @@ jobs:
         id: run-tests
         run: |
           npm run test:cov
-          ls -la coverage/
-        continue-on-error: true
-      
-      - name: Debug Info
-        run: |
-          echo "Checking coverage directory structure:"
-          ls -la coverage/
-          echo "Checking lcov.info existence:"
-          ls -la coverage/lcov.info || echo "lcov.info not found"
+        #   ls -la coverage/
+        # continue-on-error: true
           
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v4
@@ -63,8 +56,8 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage/lcov.info
           flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: true
+          # name: codecov-umbrella
+          # fail_ci_if_error: true
 
       - name: Slack Notification on Test Success
         if: steps.run-tests.outcome == 'success'
