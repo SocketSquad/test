@@ -9,4 +9,8 @@ export class AppService {
   getBye(): string {
     return 'Bye World!';
   }
+
+  getNexus(): string {
+    return 'Nexus!';
+  }
 }

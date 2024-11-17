@@ -15,12 +15,15 @@ export class AppController {
     return this.appService.getBye();
   }
 
+  @Get('NEXUS')
+  getNexus(): string {
+    return this.appService.getNexus();
+  }
 
 
 
 
 
-  
 
 
 }
