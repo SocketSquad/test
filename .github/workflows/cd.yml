@@ -5,14 +5,12 @@ on:
     workflows: ["CI Pipeline"]
     types:
       - completed
-    branches: [ "main" ]
 
 env:
   SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: self-hosted
 
     steps:
