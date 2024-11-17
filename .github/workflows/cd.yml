@@ -18,10 +18,10 @@ jobs:
           echo "Pulling latest Docker image..."
           sudo docker pull echaf/nexus-app-back:latest
           
-      - name: Stop Old Container
-        run: |
-          echo "Stopping old container if exists..."
-          sudo docker rm -f nexus-app-back-container || true
+      # - name: Stop Old Container
+      #   run: |
+      #     echo "Stopping old container if exists..."
+      #     sudo docker rm -f nexus-app-back-container || true
           
       - name: Run New Docker Container
         id: run-container
