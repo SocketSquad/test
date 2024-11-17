@@ -5,7 +5,6 @@ on:
     workflows: ["CI Pipeline"]
     types:
       - completed
-    branches: [ "main" ]
 
 env:
   SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
