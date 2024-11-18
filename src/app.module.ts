@@ -8,6 +8,8 @@ import { MessagesModule } from './messages/messages.module';
 import { MessageAttachmentsModule } from './message-attachments/message-attachments.module';
 import { FriendsModule } from './friends/friends.module';
 import { FriendsRequestsModule } from './friends-requests/friends-requests.module';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -23,5 +25,7 @@ import { FriendsRequestsModule } from './friends-requests/friends-requests.modul
     FriendsModule,
     FriendsRequestsModule,
   ],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
