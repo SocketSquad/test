@@ -14,4 +14,16 @@ export class AppController {
   getHello2(): string {
     return this.appService.getBye();
   }
+
+  @Get('NEXUS')
+  getNexus(): string {
+    return this.appService.getNexus();
+  }
+
+
+
+
+
+
+
 }
